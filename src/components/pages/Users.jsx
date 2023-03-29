@@ -1,6 +1,10 @@
 import styled from "styled-components";
+import { useContext } from "react";
+import { useLocation } from "react-router-dom";
 import { SearchInput } from "../molecules/SearchInput";
 import { UserCard } from "../organisms/user/UserCard";
+import { SecondaryButton } from "../atoms/button/SecondaryButton";
+import { UserContext } from "../../providers/UserProvider";
 
 // 配列にオブジェクトを10コ設定
 const users = [...Array(10).keys()].map((val) => {
@@ -20,9 +24,14 @@ const users = [...Array(10).keys()].map((val) => {
 
 // map関数の第一引数は配列の要素自体を表すのでpropsとして各要素の情報をUserCardコンポーネントに渡している
 export const Users = () => {
+  const { userInfo, setUserInfo } = useContext(UserContext);
+  const onClickSwitch = () => setUserInfo({ isAdmin: !userInfo.isAdmin });
+
   return (
     <SContainer>
       <SearchInput />
+      <br />
+      <SecondaryButton onClick={onClickSwitch}>Change</SecondaryButton>
       <SUserArea>
         {users.map((user) => {
           return <UserCard key={user.id} user={user} />;
